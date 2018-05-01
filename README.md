@@ -1,5 +1,5 @@
 # misterynumber
-little game made with phaser for the game jam motivation challenge:
+Little game made with phaser for the game jam motivation challenge:
 
 http://huhmiel.free.fr/misterynumber/
 
