@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8">
@@ -9,22 +9,60 @@
     <link href="css/styles.css" rel="stylesheet">
     <script type="text/javascript" src="script.js"></script>
     <script type="text/javascript" src="js/phaser.js"></script>
+    <style>
+        body {
+            background-color: linen;
+            margin: 0 auto;
+            width: 320px;
+            font-family: "Sans";
+        }
+                
+        input {
+            max-width: 30px;
+            position: absolute;
+            margin-top: 160px;
+            margin-left: 145px;
+            
+        }
+        
+        canvas {
+            text-align: center;
+        }
+
+    </style>
 </head>
 
 <body>
     <script>
-        var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', {
+        var game = new Phaser.Game(320, 240, Phaser.AUTO, 'phaser-example', {
             preload: preload,
             create: create,
             update: update
         });
+        var petitText;
+        var grandText;
 
         function preload() {
+            game.load.image('computer1', 'assets/computer1.png');
+            game.load.image('computer2', 'assets/computer2.png');
+            game.load.image('computer3', 'assets/computer3.png');
+            game.load.image('computer4', 'assets/computer4.png');
+            game.load.image('computer5', 'assets/computer5.png');
+            game.load.image('computer6', 'assets/computer6.png');
+            game.load.bitmapFont('atomicsc', 'assets/atomicsc.png', 'assets/atomicsc.xml');
             
         }
 
         function create() {
-            
+            var computer = game.add.sprite(160, 0, 'computer1');
+            computer.anchor.x = 0.5;
+            computer.anchor.Y = 0.5;
+            petitText = game.add.bitmapText(50, 170, 'atomicsc', 'trop petit', 12);
+            petitText.anchor.x = 0.5;
+            petitText.anchor.y = 0.5;
+            grandText = game.add.bitmapText(270, 170, 'atomicsc', 'trop grand', 12);
+            grandText.anchor.x = 0.5;
+            grandText.anchor.y = 0.5;
         }
         
         function update() {
@@ -33,5 +71,6 @@
         
         
     </script>
+    <input id="min" type="number" placeholder="0">
 </body>
 </html>
