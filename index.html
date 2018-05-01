@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Nombre Mystère</title>
     <link href="css/styles.css" rel="stylesheet">
-    <script type="text/javascript" src="script.js"></script>
     <script type="text/javascript" src="js/phaser.js"></script>
     <style>
         body {
@@ -16,19 +15,24 @@
             width: 320px;
             font-family: "Sans";
         }
-                
+
         input {
-            max-width: 30px;
+            max-width: 40px;
             position: absolute;
             margin-top: 160px;
-            margin-left: 145px;
-            
+            margin-left: 140px;
+
         }
-        
+
         canvas {
             text-align: center;
         }
-
+        
+        p {
+            position: absolute;
+            margin-top: 250px;
+            max-width: 320px;
+        }
     </style>
 </head>
 
@@ -39,8 +43,13 @@
             create: create,
             update: update
         });
+
+        //variables
         var petitText;
         var grandText;
+        var userTry = 0;
+        var mystereNbr;
+        var computer;
 
         function preload() {
             game.load.image('computer1', 'assets/computer1.png');
@@ -49,28 +58,103 @@
             game.load.image('computer4', 'assets/computer4.png');
             game.load.image('computer5', 'assets/computer5.png');
             game.load.image('computer6', 'assets/computer6.png');
+            game.load.image('computer7', 'assets/computer7.png');
+            game.load.image('btn_ok', 'assets/ok.png');
             game.load.bitmapFont('atomicsc', 'assets/atomicsc.png', 'assets/atomicsc.xml');
-            
+
         }
 
         function create() {
-            var computer = game.add.sprite(160, 0, 'computer1');
+            //sprites
+            computer = game.add.sprite(160, 0, 'computer6');
             computer.anchor.x = 0.5;
             computer.anchor.Y = 0.5;
+
+            //buttons
+            btn_ok = game.add.button(160, 200, 'btn_ok', actionOnClick);
+            btn_ok.anchor.x = 0.5;
+            btn_ok.anchor.y = 0.5;
+
+            //text
+            maxTryText = game.add.bitmapText(280, 10, 'atomicsc', "essai: " + userTry.toString(), 12);
+            maxTryText.anchor.x = 0.5;
+            maxTryText.anchor.y = 0.5;
+
             petitText = game.add.bitmapText(50, 170, 'atomicsc', 'trop petit', 12);
             petitText.anchor.x = 0.5;
             petitText.anchor.y = 0.5;
+            petitText.visible = false;
+
             grandText = game.add.bitmapText(270, 170, 'atomicsc', 'trop grand', 12);
             grandText.anchor.x = 0.5;
             grandText.anchor.y = 0.5;
+            grandText.visible = false;
+
+            winLooseText = game.add.bitmapText(160, 10, 'atomicsc', '', 12);
+            winLooseText.anchor.x = 0.5;
+            winLooseText.anchor.y = 0.5;
+            winLooseText.visible = false;
+            //genere nombre mystere en de but de partie
+            mystereNbr = getRandomInt(0, 9);
         }
-        
+
         function update() {
-            
+
         }
-        
-        
+
+        //fonction qui genere les nombres aleatoires
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        function actionOnClick() {
+            petitText.visible = false;
+            grandText.visible = false;
+            winLooseText.visible = false;
+            maxTryText.visible = true;
+
+            var inputuser = document.getElementById("userinput").value;
+            
+            if (inputuser < mystereNbr && userTry < 3) {
+                petitText.visible = true;
+                computer.loadTexture("computer7");
+                userTry++;
+                maxTryText.setText("essai: " + userTry.toString())
+            }
+            if (inputuser > mystereNbr && userTry < 3) {
+                grandText.visible = true;
+                computer.loadTexture("computer5");
+                userTry++;
+                maxTryText.setText("essai: " + userTry.toString())
+
+            }
+
+            if (inputuser == mystereNbr && userTry < 3) {
+                winLooseText.setText("BINGO!!");
+                winLooseText.visible = true;
+                computer.loadTexture("computer1");
+                userTry = 0;
+                maxTryText.setText("essai: " + userTry.toString());
+                maxTryText.visible = false;
+                mystereNbr = getRandomInt(0, 9);
+            }
+            if (userTry === 3) {
+                winLooseText.setText("PERDU!!");
+                winLooseText.visible = true;
+                computer.loadTexture("computer3");
+                userTry = 0;
+                maxTryText.setText("essai: " + userTry.toString());
+                maxTryText.visible = false;
+                petitText.visible = false;
+                grandText.visible = false;
+                mystereNbr = getRandomInt(0, 9);
+            }
+        }
     </script>
-    <input id="min" type="number" placeholder="0">
+    <input id="userinput" type="number" placeholder="0">
+    
+    <p>Trouve le nombre mystère en moins de 3 essais, recommence autant que tu veux !!</p>
 </body>
 </html>
