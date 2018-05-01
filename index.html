@@ -50,6 +50,8 @@
         var userTry = 0;
         var mystereNbr;
         var computer;
+        var gameover =["Perdu!! pff t'es nul","Perdu!! pff va jouer a pokemon","Perdu hahaha","game over!!"];
+        var win = ["pff trop de chance","BINGO","mouai pas mal"]
 
         function preload() {
             game.load.image('computer1', 'assets/computer1.png');
@@ -97,7 +99,7 @@
         }
 
         function update() {
-
+            //nothing to do here
         }
 
         //fonction qui genere les nombres aleatoires
@@ -130,7 +132,7 @@
             }
 
             if (inputuser == mystereNbr && userTry < 3) {
-                winLooseText.setText("BINGO!!");
+                winLooseText.setText(win[userTry ]);
                 winLooseText.visible = true;
                 computer.loadTexture("computer1");
                 userTry = 0;
@@ -139,7 +141,8 @@
                 mystereNbr = getRandomInt(0, 9);
             }
             if (userTry === 3) {
-                winLooseText.setText("PERDU!!");
+                var i = getRandomInt(0,3);
+                winLooseText.setText(gameover[i]);
                 winLooseText.visible = true;
                 computer.loadTexture("computer3");
                 userTry = 0;
